@@ -1,0 +1,41 @@
+{
+    "books": [
+        {
+            "title": "gojo saturo",
+            "author": "gege",
+            "isbn": "9202",
+            "copies_available": 99
+        },
+        {
+            "title": "Data Structures",
+            "author": "Sara Khan",
+            "isbn": "B102",
+            "copies_available": 80
+        },
+        {
+            "title": "Introduction to Algorithms",
+            "author": "Thomas ",
+            "isbn": "b103",
+            "copies_available": 25
+        }
+    ],
+    "members": [
+        {
+            "name": "Alina Akhtar",
+            "member_id": "1292",
+            "borrowed_books": [
+                "9202"
+            ]
+        },
+        {
+            "name": "Ayesha Khan",
+            "member_id": "4521",
+            "borrowed_books": []
+        },
+        {
+            "name": "Hira Malik",
+            "member_id": "125",
+            "borrowed_books": []
+        }
+    ]
+}
