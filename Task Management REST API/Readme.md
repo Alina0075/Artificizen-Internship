@@ -373,20 +373,4 @@ tests/test_tasks.py .....                                [100%]
 | PostgreSQL Integration | Complete |
 | Automated Testing | Complete |
 
----
 
-## Author
-
-**Alina Akhtar**
-
-BS Computer Science
-
-University of Central Punjab
-
-AI Engineer Intern
-
-Artificizen Pvt. Ltd.
-
-GitHub: https://github.com/<YOUR_USERNAME>
-
-LinkedIn: https://linkedin.com/in/<YOUR_LINKEDIN_USERNAME>
