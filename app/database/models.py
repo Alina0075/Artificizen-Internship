@@ -5,9 +5,15 @@ from .database import Base
 import enum 
 
 class FileStatus(str,enum.Enum):
+<<<<<<< Updated upstream
     PROCESSING = "processing"
     UPLOADED = "uploaded"
     FAILED = "failed"
+=======
+    PROCESSING = "PROCESSING"
+    UPLOADED = "UPLOADED"
+    FAILED = "FAILED"
+>>>>>>> Stashed changes
 
 class MessageRole(str,enum.Enum):
     USER = "user"
@@ -54,5 +60,9 @@ class UploadedFile(Base):
     file_type=Column(String(50),nullable=False)
     file_path=Column(String(255),nullable=False)
     status=Column(Enum(FileStatus),default=FileStatus.PROCESSING)
+<<<<<<< Updated upstream
+=======
+    error_message=Column(Text,nullable=True)
+>>>>>>> Stashed changes
     uploaded_at=Column(DateTime(timezone=True),default=datetime.utcnow)
     room=relationship("ChatRoom",back_populates="uploaded_files")
