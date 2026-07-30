@@ -6,7 +6,9 @@ class ChatRequest(BaseModel):
 
 class Source(BaseModel):
     filename:str
+    file_type:str
     chunk_index:str
+    excerpt:str
 
 class ChatResponse(BaseModel):
     answer:str
