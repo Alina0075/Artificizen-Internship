@@ -1,0 +1,66 @@
+CYBERSECURITY AWARENESS - BEST PRACTICES
+==========================================
+
+WHY IT MATTERS
+--------------
+Most successful cyberattacks rely on human error, not advanced hacking.
+A single clicked link, reused password, or unpatched device can be
+enough to compromise an entire system. Awareness is the first and
+cheapest line of defense.
+
+THE CIA TRIAD
+-------------
+- Confidentiality : information is accessible only to those authorized
+- Integrity       : data remains accurate and unaltered
+- Availability    : systems and data remain accessible when needed
+
+COMMON THREATS
+--------------
+1. Phishing            - Fake messages that trick users into revealing
+                          credentials
+2. Ransomware           - Encrypts files and demands payment for release
+3. Malware               - Viruses, worms, trojans, and spyware
+4. Man-in-the-Middle     - Intercepts communication between two parties
+5. SQL Injection         - Malicious input used to manipulate databases
+6. Denial of Service     - Floods a system with traffic to make it
+                          unavailable
+7. Password Attacks      - Brute force / dictionary attempts to guess
+                          credentials
+8. Insider Threats       - Authorized users misusing access
+9. Zero-Day Exploits     - Attacks exploiting unknown vulnerabilities
+
+PERSONAL BEST PRACTICES
+------------------------
+1. Use a password manager and unique passwords per account
+2. Enable multi-factor authentication wherever available
+3. Keep software and operating systems updated
+4. Avoid clicking unsolicited links or attachments
+5. Use a VPN on public or untrusted Wi-Fi networks
+6. Back up important data regularly
+7. Lock devices when unattended; use full-disk encryption
+8. Review app and browser permissions periodically
+
+ORGANIZATIONAL BEST PRACTICES
+-------------------------------
+1. Apply the principle of least privilege
+2. Provide regular security awareness training
+3. Maintain and test an incident response plan
+4. Segment networks to limit breach spread
+5. Deploy firewalls, IDS/IPS, and endpoint protection
+6. Conduct periodic vulnerability assessments
+7. Keep an up-to-date asset inventory
+
+IF YOU THINK YOU'VE BEEN COMPROMISED
+--------------------------------------
+1. Disconnect the device from the network
+2. Do not shut down if forensic evidence may be needed - consult IT first
+3. Change passwords for critical accounts from a separate, trusted device
+4. Enable or verify multi-factor authentication
+5. Report the incident to IT/security or the relevant service provider
+6. Run a full antivirus/anti-malware scan once isolated
+7. Restore from a known-clean backup if files were affected
+
+CLOSING NOTE
+------------
+Security is a habit, not a setting. Stay alert. Stay updated.
+Stay backed up.

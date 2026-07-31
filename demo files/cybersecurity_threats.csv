@@ -1,0 +1,13 @@
+Threat Type,Category,Description,Common Attack Vector,Risk Level,Key Prevention Tip
+Phishing,Social Engineering,Fraudulent messages that trick users into revealing credentials or personal data,Email / SMS / Fake websites,High,Verify sender identity and avoid clicking unsolicited links
+Ransomware,Malware,Malicious software that encrypts files and demands payment for release,Email attachments / Drive-by downloads,Critical,Maintain offline backups and keep software patched
+Malware,Malicious Software,General term for viruses worms trojans and spyware that damage or exploit systems,Infected downloads / USB drives,High,Use reputable antivirus and avoid untrusted downloads
+Man-in-the-Middle,Network Attack,Attacker secretly intercepts and relays communication between two parties,Unsecured Wi-Fi / Spoofed networks,Medium,Use VPN and avoid public Wi-Fi for sensitive tasks
+SQL Injection,Application Attack,Malicious SQL code inserted into input fields to manipulate databases,Vulnerable web forms,High,Use parameterized queries and input validation
+Denial of Service (DoS/DDoS),Network Attack,Overwhelming a system with traffic to make it unavailable,Botnets / Traffic floods,High,Use rate limiting and DDoS protection services
+Password Attack,Credential Attack,Attempts to guess or crack passwords through brute force or dictionaries,Automated login attempts,Medium,Use strong unique passwords and multi-factor authentication
+Insider Threat,Human Factor,Employees or contractors misusing authorized access to harm the organization,Privileged account misuse,Medium,Apply least-privilege access and monitor activity logs
+Zero-Day Exploit,Software Vulnerability,Attack exploiting a previously unknown software vulnerability,Unpatched software,Critical,Apply security patches promptly and use intrusion detection
+Social Engineering,Human Factor,Psychological manipulation to trick people into breaking security procedures,Pretexting / Baiting / Impersonation,High,Provide regular security awareness training
+Spyware,Malware,Software that secretly monitors and collects user information,Bundled downloads / Malicious ads,Medium,Use anti-spyware tools and review app permissions
+Credential Stuffing,Credential Attack,Using leaked username-password pairs to gain unauthorized access,Automated login bots,Medium,Enable multi-factor authentication and monitor for breaches
