@@ -1,6 +1,6 @@
 # 🛡️ CyberRAG — Multimodal Cybersecurity Intelligence Platform
 
-## Week 4 Capstone Project — Multimodal RAG
+## Capstone Project - Multimodal RAG
 
 CyberRAG is a **multimodal Retrieval-Augmented Generation (RAG) platform** designed for cybersecurity intelligence and evidence analysis.
 
