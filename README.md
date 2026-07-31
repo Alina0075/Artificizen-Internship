@@ -175,7 +175,7 @@ Users can:
 | Word       | `.docx`                          |
 | Images     | `.png`, `.jpg`, `.jpeg`          |
 | Audio      | `.mp3`, `.wav`, `.flac`          |
-| Video      | `.mp4`, `.avi`, `.mov`, `.mpeg4` |
+| Video      | `.mp4`, `.avi`, `.mov` |
 | PowerPoint | `.pptx`                          |
 | CSV        | `.csv`                           |
 | Markdown   | `.md`                            |
