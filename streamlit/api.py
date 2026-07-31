@@ -88,3 +88,20 @@ def send_chat(token, room_id, message):
             "query": message
         }
     )
+    
+def delete_file(token, room_id, file_id):
+
+    return requests.delete(
+        f"{API_URL}/upload/{room_id}/{file_id}",
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+    )
+
+def delete_room(token, room_id):
+    return requests.delete(
+        f"{API_URL}/rooms/{room_id}",
+        headers={
+            "Authorization": f"Bearer {token}"
+        }
+    )

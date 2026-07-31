@@ -46,7 +46,6 @@ def upload_file(
     current_user=Depends(get_current_user)
 ):
 
-
     room = (
         db.query(ChatRoom)
         .filter(
@@ -62,6 +61,32 @@ def upload_file(
             detail="Chat room not found"
         )
 
+    extension = file.filename.split(".")[-1].lower()
+
+    allowed_extensions = [
+        "csv",
+        "docx",
+        "pdf",
+        "txt",
+        "md",
+        "pptx",
+        "jpg",
+        "jpeg",
+        "png",
+        "mp3",
+        "wav",
+        "flac",
+        "mp4",
+        "avi",
+        "mov"
+    ]
+
+    if extension not in allowed_extensions:
+        raise HTTPException(
+            status_code=400,
+            detail="Unsupported file type"
+        )
+
     old_files = (
         db.query(UploadedFile)
         .filter(
@@ -70,20 +95,22 @@ def upload_file(
         )
         .all()
     )
-    unique_filename = f"{uuid.uuid4()}_{file.filename}"
+
+    unique_filename = (
+        f"{uuid.uuid4()}_{file.filename}"
+    )
 
     save_path = os.path.join(
         upload_folder,
         unique_filename
     )
-
-    with open(save_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    uploaded = None
-
     try:
-        extension = file.filename.split(".")[-1].lower()
+
+        with open(save_path, "wb") as buffer:
+            shutil.copyfileobj(
+                file.file,
+                buffer
+            )
 
         uploaded = UploadedFile(
             room_id=room_id,
@@ -124,25 +151,34 @@ def upload_file(
         elif extension in ["mp4", "avi", "mov"]:
             texts = extract_video(save_path)
 
-        else:
-            raise HTTPException(
-                status_code=400,
-                detail="Unsupported file type"
-            )
-
         chunks = []
 
         for text in texts:
-            chunks.extend(chunk_text(text))
+            chunks.extend(
+                chunk_text(text)
+            )
 
-        print("Extracted documents:", len(texts))
-        print("Chunks created:", len(chunks))
+        print(
+            "Extracted documents:",
+            len(texts)
+        )
+
+        print(
+            "Chunks created:",
+            len(chunks)
+        )
+
         vectors = []
 
         for chunk in chunks:
-            vectors.append(get_embedding(chunk))
+            vectors.append(
+                get_embedding(chunk)
+            )
 
-        print("Embeddings created:", len(vectors))
+        print(
+            "Embeddings created:",
+            len(vectors)
+        )
 
         for i, (chunk, vector) in enumerate(
             zip(chunks, vectors)
@@ -166,15 +202,12 @@ def upload_file(
                 ]
             )
 
-        print("New file chunks stored successfully")
+        print(
+            "New file chunks stored successfully"
+        )
+
 
         for old_file in old_files:
-
-            print(
-                f"Deleting old file: "
-                f"{old_file.filename} "
-                f"(ID: {old_file.id})"
-            )
 
             client.delete(
                 collection_name=collection_name,
@@ -194,63 +227,64 @@ def upload_file(
                 old_file.file_path
                 and os.path.exists(old_file.file_path)
             ):
-                os.remove(old_file.file_path)
+                os.remove(
+                    old_file.file_path
+                )
 
             db.delete(old_file)
-            
+
         uploaded.status = FileStatus.UPLOADED
 
         db.commit()
         db.refresh(uploaded)
 
-        print(
-            f"Upload successful: "
-            f"{uploaded.filename} "
-            f"| FILE ID: {uploaded.id}"
+        return UploadResponse(
+            file_id=uploaded.id,
+            filename=uploaded.filename,
+            status=FileStatus.UPLOADED,
+            message="File uploaded successfully"
         )
-
-    except HTTPException:
-        db.rollback()
-
-        if uploaded:
-            uploaded.status = FileStatus.FAILED
-            uploaded.error_message = "Upload failed"
-            db.add(uploaded)
-            db.commit()
-        if os.path.exists(save_path):
-            os.remove(save_path)
-
-        raise
 
     except Exception as e:
 
-        print("UPLOAD ERROR:", str(e))
+        print(
+            "UPLOAD ERROR:",
+            str(e)
+        )
 
-        db.rollback()
 
-        if uploaded:
-
+        try:
             uploaded.status = FileStatus.FAILED
             uploaded.error_message = str(e)
 
-            db.add(uploaded)
             db.commit()
+            db.refresh(uploaded)
 
-        # Remove failed NEW physical file
+        except Exception as db_error:
+
+            print(
+                "FAILED TO UPDATE UPLOAD STATUS:",
+                str(db_error)
+            )
+
+            db.rollback()
+
         if os.path.exists(save_path):
-            os.remove(save_path)
+
+            try:
+                os.remove(save_path)
+
+            except Exception as file_error:
+
+                print(
+                    "FAILED TO REMOVE UPLOAD:",
+                    str(file_error)
+                )
 
         raise HTTPException(
             status_code=500,
             detail=str(e)
         )
-
-    return UploadResponse(
-        file_id=uploaded.id,
-        filename=uploaded.filename,
-        status=FileStatus.UPLOADED,
-        message="File uploaded successfully"
-    )
     
 @router.get("/{room_id}/files")
 def get_files(
@@ -292,3 +326,79 @@ def get_files(
         }
         for file in files
     ]
+
+@router.delete("/{room_id}/{file_id}")
+def delete_file(
+    room_id: int,
+    file_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    room = (
+        db.query(ChatRoom)
+        .filter(
+            ChatRoom.id == room_id,
+            ChatRoom.owner_id == current_user.id
+        )
+        .first()
+    )
+
+    if not room:
+        raise HTTPException(
+            status_code=404,
+            detail="Room not found"
+        )
+
+    file = (
+        db.query(UploadedFile)
+        .filter(
+            UploadedFile.id == file_id,
+            UploadedFile.room_id == room_id
+        )
+        .first()
+    )
+
+    if not file:
+        raise HTTPException(
+            status_code=404,
+            detail="File not found"
+        )
+
+    try:
+        client.delete(
+            collection_name=collection_name,
+            points_selector=Filter(
+                must=[
+                    FieldCondition(
+                        key="file_id",
+                        match=MatchValue(
+                            value=file.id
+                        )
+                    )
+                ]
+            )
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete file from vector database: {str(e)}"
+        )
+
+    if file.file_path and os.path.exists(file.file_path):
+        try:
+            os.remove(file.file_path)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to delete physical file: {str(e)}"
+            )
+
+    # Delete database record
+    db.delete(file)
+    db.commit()
+
+    return {
+        "message": "File deleted successfully",
+        "file_id": file_id
+    }

@@ -2,6 +2,8 @@ import streamlit as st
 import textwrap
 
 from api import (
+    delete_file,
+    delete_room,
     login,
     register,
     get_rooms,
@@ -68,7 +70,8 @@ defaults = {
     "messages": [],
     "files": [],
     "page": "login",
-    "auth_mode": "login"
+    "auth_mode": "login",
+    "upload_key": 0
 }
 
 for key, value in defaults.items():
@@ -101,6 +104,13 @@ def load_rooms():
     if response.status_code == 200:
 
         st.session_state.rooms = response.json()
+    else:
+
+        st.session_state.rooms = []
+
+        st.error(
+            f"Failed to load workspaces: {response.text}"
+        )
 
 
 def load_room_data(room_id):
@@ -562,7 +572,7 @@ def render_files(room_id):
         unsafe_allow_html=True
     )
 
-    uploaded = st.file_uploader(
+    uploaded_files = st.file_uploader(
         "Upload evidence",
         type=[
             "pdf",
@@ -573,147 +583,224 @@ def render_files(room_id):
             "png",
             "jpg",
             "jpeg",
-            "mp4",
+            "pptx",
+
+            # Audio
             "mp3",
-            "pptx"
+            "wav",
+            "flac",
+
+            # Video
+            "mp4",
+            "avi",
+            "mov"
         ],
-        label_visibility="collapsed"
+        accept_multiple_files=True,
+        label_visibility="collapsed",
+        key=f"evidence_uploader_{st.session_state.upload_key}"
     )
 
-    if uploaded:
+    # ========================================
+    # MULTIPLE FILE UPLOAD
+    # ========================================
+
+    if uploaded_files:
 
         if st.button(
-            "Upload file",
+            "Upload files",
             use_container_width=True,
-            key="upload_file_button"
+            key="upload_files_button"
         ):
 
-            with st.spinner(
-                "Uploading and indexing..."
-            ):
+            success_count = 0
+            failed_count = 0
 
-                response = upload_file(
-                    st.session_state.token,
-                    room_id,
-                    uploaded
+            progress = st.progress(0)
+
+            for index, uploaded in enumerate(uploaded_files):
+
+                with st.spinner(
+                    f"Uploading and indexing {uploaded.name}..."
+                ):
+
+                    response = upload_file(
+                        st.session_state.token,
+                        room_id,
+                        uploaded
+                    )
+
+                if response.status_code in [200, 201]:
+
+                    success_count += 1
+
+                else:
+
+                    failed_count += 1
+
+                    st.error(
+                        f"{uploaded.name}: {response.text}"
+                    )
+
+                progress.progress(
+                    (index + 1) / len(uploaded_files)
                 )
 
-            if response.status_code in [200, 201]:
+            if success_count:
 
                 st.success(
-                    f"{uploaded.name} uploaded."
+                    f"{success_count} file(s) uploaded successfully."
                 )
 
-                load_room_data(room_id)
+            if failed_count:
 
-                st.rerun()
-
-            else:
-
-                st.error(
-                    response.text
+                st.warning(
+                    f"{failed_count} file(s) failed."
                 )
+            
+            # Reload files from backend
+            load_room_data(room_id)
 
-    st.divider()
+            # Clear selected files from uploader
+            st.session_state.upload_key += 1
+
+            st.rerun()
+
+    # ========================================
+    # DISPLAY EXISTING FILES
+    # ========================================
 
     files = st.session_state.files
-
-    if not files:
-
-        st.caption(
-            "No files uploaded yet."
-        )
-
-        return
 
     for file in files:
 
         filename = file.get(
-                "filename",
-                file.get("name", "Unknown")
+            "filename",
+            file.get("name", "Unknown")
         )
 
+        file_id = file.get("id")
+
         status = file.get(
-                "status",
-                "unknown"
-            ).lower()
+            "status",
+            "unknown"
+        ).lower()
 
         file_type = file.get(
-                "file_type",
-                filename.split(".")[-1].upper()
-            )
+            "file_type",
+            filename.split(".")[-1].upper()
+        )
 
         if status in [
-                "uploaded",
-                "ready",
-                "completed",
-                "indexed"
-            ]:
-
-                badge = "🟢 READY"
-
-        elif status in [
-                "processing",
-                "indexing"
-            ]:
-
-                badge = "🟠 INDEXING"
+            "uploaded",
+            "ready",
+            "completed",
+            "indexed"
+        ]:
+            badge = "🟢 READY"
 
         elif status in [
-                "failed",
-                "error"
-            ]:
+            "processing",
+            "indexing"
+        ]:
+            badge = "🟠 INDEXING"
 
-                badge = "🔴 ERROR"
+        elif status in [
+            "failed",
+            "error"
+        ]:
+            badge = "🔴 ERROR"
 
         else:
+            badge = "⚪ UNKNOWN"
 
-                badge = "⚪ UNKNOWN"
-        st.markdown(
-            html_block(f"""
-            <div class="card">
+        col1, col2 = st.columns([5, 1])
 
-                <div style="
-                    display:flex;
-                    align-items:center;
-                    gap:8px;
-                ">
+        with col1:
 
-                    <div style="flex:1">
-
-                        <div style="
-                            font-family:monospace;
-                            font-size:10px;
-                            overflow:hidden;
-                            text-overflow:ellipsis;
-                        ">
-                            {filename}
-                        </div>
-
-                        <div style="
-                            font-size:9px;
-                            color:#9E9B94;
-                            margin-top:3px;
-                        ">
-                            {file_type}
-                        </div>
-
-                    </div>
+            st.markdown(
+                html_block(f"""
+                <div class="card" style="overflow:hidden;">
 
                     <div style="
-                        font-size:8px;
-                        font-family:monospace;
+                        display:flex;
+                        align-items:center;
+                        gap:8px;
                     ">
-                        {badge}
+
+                        <div style="
+                            flex:1;
+                            min-width:0;
+                        ">
+
+                            <div style="
+                                font-family:monospace;
+                                font-size:10px;
+                                white-space:nowrap;
+                                overflow:hidden;
+                                text-overflow:ellipsis;
+                            " title="{filename}">
+                                {filename}
+                            </div>
+
+                            <div style="
+                                font-size:9px;
+                                color:#9E9B94;
+                                margin-top:3px;
+                            ">
+                                {file_type}
+                            </div>
+
+                        </div>
+
+                        <div style="
+                            flex-shrink:0;
+                            white-space:nowrap;
+                            font-size:8px;
+                            font-family:monospace;
+                        ">
+                            {badge}
+                        </div>
+
                     </div>
 
                 </div>
+                """),
+                unsafe_allow_html=True
+            )
 
-            </div>
-            """),
-            unsafe_allow_html=True
-        )
+        with col2:
 
+            if st.button(
+                "×",
+                key=f"delete_file_{room_id}_{file_id}",
+                help=f"Delete {filename}"
+            ):
+
+                response = delete_file(
+                    st.session_state.token,
+                    room_id,
+                    file_id
+                )
+
+                if response.status_code == 200:
+
+                    st.session_state.files = [
+                        f for f in st.session_state.files
+                        if f.get("id") != file_id
+                    ]
+
+                    st.success(
+                        f"{filename} deleted."
+                    )
+
+                    st.rerun()
+
+                else:
+
+                    st.error(
+                        f"Failed to delete {filename}: "
+                        f"{response.text}"
+                    )
 
 # ============================================
 # SOURCES
@@ -887,7 +974,7 @@ def room_view():
     # ROOM HEADER
     # ========================================
 
-    col1, col2 = st.columns([5, 1])
+    col1, col2, col3 = st.columns([4, 1, 1])
 
     with col1:
 
@@ -914,12 +1001,87 @@ def room_view():
     with col2:
 
         if st.button(
-            "← Rooms"
+            "← Rooms",
+            use_container_width=True,
+            key=f"back_to_rooms_{room_id}"
         ):
 
             st.session_state.page = "rooms"
-
             st.rerun()
+
+    with col3:
+
+        if st.button(
+            "🗑 Delete workspace",
+            use_container_width=True,
+            key=f"delete_room_{room_id}"
+        ):
+
+            st.session_state.confirm_delete_room = True
+            st.rerun()
+
+
+    # ========================================
+    # DELETE WORKSPACE CONFIRMATION
+    # ========================================
+
+    if st.session_state.get("confirm_delete_room", False):
+
+        st.warning(
+            f"Are you sure you want to permanently delete "
+            f"the workspace '{room_name}'?"
+        )
+
+        confirm_col1, confirm_col2 = st.columns(2)
+
+        with confirm_col1:
+
+            if st.button(
+                "Yes, delete workspace",
+                type="primary",
+                use_container_width=True,
+                key=f"confirm_delete_{room_id}"
+            ):
+
+                response = delete_room(
+                    st.session_state.token,
+                    room_id
+                )
+
+                if response.status_code == 200:
+
+                    st.session_state.confirm_delete_room = False
+                    st.session_state.selected_room = None
+                    st.session_state.messages = []
+                    st.session_state.files = []
+
+                    load_rooms()
+
+                    st.session_state.page = "rooms"
+
+                    st.success(
+                        "Workspace deleted successfully."
+                    )
+
+                    st.rerun()
+
+                else:
+
+                    st.error(
+                        f"Failed to delete workspace: {response.text}"
+                    )
+
+        with confirm_col2:
+
+            if st.button(
+                "Cancel",
+                use_container_width=True,
+                key=f"cancel_delete_{room_id}"
+            ):
+
+                st.session_state.confirm_delete_room = False
+                st.rerun()
+
 
     st.divider()
 
@@ -1223,11 +1385,10 @@ def room_view():
 
                 if response.status_code == 200:
 
-                    st.session_state.messages = []
-                    st.session_state.files = []
+                    load_room_data(room_id)
 
                     st.success(
-                        "Chat history and all workspace files deleted successfully."
+                        "Chat history deleted successfully."
                     )
 
                     st.rerun()

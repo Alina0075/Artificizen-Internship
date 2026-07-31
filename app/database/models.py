@@ -16,7 +16,7 @@ class MessageRole(str,enum.Enum):
 class User(Base):
     __tablename__="users"
     id=Column(Integer,primary_key=True,index=True)
-    username=Column(String(50),unique=True,index=True,nullable=False)
+    username=Column(String(50),index=True,nullable=False)
     email=Column(String(100),unique=True,index=True,nullable=False)
     hashed_password=Column(String(255),nullable=False)
     created_at=Column(DateTime(timezone=True),default=datetime.utcnow)
@@ -26,7 +26,7 @@ class User(Base):
 class ChatRoom(Base):
     __tablename__="chat_rooms"
     id=Column(Integer,primary_key=True,index=True)
-    name=Column(String(128),unique=True,index=True,nullable=False)
+    name=Column(String(128),index=True,nullable=False)
     description=Column(Text,nullable=True)
     created_at=Column(DateTime(timezone=True),default=datetime.utcnow)
     owner_id=Column(Integer,ForeignKey("users.id"))
