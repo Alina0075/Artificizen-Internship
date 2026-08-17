@@ -1,6 +1,9 @@
 import os
 import whisper
 from moviepy import VideoFileClip
+import imageio_ffmpeg
+
+os.environ["FFMPEG_BINARY"] = imageio_ffmpeg.get_ffmpeg_exe()
 
 model = whisper.load_model("base")
 
