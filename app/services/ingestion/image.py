@@ -24,7 +24,7 @@ def extract_image(file_path: str):
         )
 
     response = client.chat.completions.create(
-        model="qwen/qwen2.5-vl-72b-instruct:free",
+        model="google/gemma-3-12b-it:free",
         messages=[
             {
                 "role": "user",
