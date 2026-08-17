@@ -1,0 +1,66 @@
+# Virtual Environment
+ai_venv/
+venv/
+
+# Environment variables
+.env
+
+<<<<<<< Updated upstream
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Uploads
+uploads/
+*.pdf
+*.docx
+*.pptx
+*.csv
+*.xlsx
+*.txt
+!requirements.txt
+=======
+# Uploaded files
+uploads/
+temp_audio.wav
+
+# Python cache
+__pycache__/
+*.py[cod]
+>>>>>>> Stashed changes
+
+# Vector Database
+qdrant_storage/
+*.db
+
+# SQLite
+*.sqlite3
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Coverage
+.coverage
+htmlcov/
+
+# Pytest
+.pytest_cache/
+
+# Alembic cache
+alembic/__pycache__/
+
+# Build files
+dist/
+build/
+*.egg-info/

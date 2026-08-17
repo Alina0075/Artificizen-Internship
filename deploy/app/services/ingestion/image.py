@@ -1,19 +1,21 @@
 import os
 import base64
-from openai import OpenAI
+from groq import Groq
 
-client = OpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
-    base_url="https://openrouter.ai/api/v1"
+client = Groq(
+    api_key=os.getenv("GROQ_API_KEY")
 )
 
+
 def extract_image(file_path: str):
+
     with open(file_path, "rb") as f:
         image_data = base64.b64encode(
             f.read()
         ).decode("utf-8")
 
     ext = file_path.split(".")[-1].lower()
+
     if ext in ["jpg", "jpeg"]:
         mime = "image/jpeg"
     elif ext == "png":
@@ -24,7 +26,7 @@ def extract_image(file_path: str):
         )
 
     response = client.chat.completions.create(
-        model="google/gemma-3-12b-it",
+        model="qwen/qwen3.6-27b",
         messages=[
             {
                 "role": "user",
