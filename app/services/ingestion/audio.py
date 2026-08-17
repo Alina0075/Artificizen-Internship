@@ -11,6 +11,7 @@ def extract_audio(file_path: str):
         transcription = client.audio.transcriptions.create(
             model="whisper-1",
             file=f,
-            response_format="text"
+            response_format="json"
         )
-    return [transcription]
+
+    return [transcription.text]
