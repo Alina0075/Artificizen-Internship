@@ -550,74 +550,56 @@ def load_css():
         }
 
         /* ==============================
-        AUTH TABS — CLEAN FIX
+        AUTH TABS — GLOBAL FIX
         ============================== */
 
-        .login-card .stTabs {
-            width: 100%;
+        /* Inactive tab text — force visible, kill default opacity */
+        .stTabs [data-baseweb="tab"],
+        .stTabs [data-baseweb="tab"] p {
+            color: #55524C !important;
+            opacity: 1 !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
         }
 
-        /* Tab container */
-        .login-card .stTabs [data-baseweb="tab-list"] {
-            width: 100% !important;
+        /* Tab list container */
+        .stTabs [data-baseweb="tab-list"] {
             background: #F5F3EF !important;
             border-radius: 9px !important;
             padding: 4px !important;
             gap: 3px !important;
-            margin-bottom: 23px !important;
         }
 
-        /* Individual tabs */
-        .login-card .stTabs [data-baseweb="tab"] {
+        .stTabs [data-baseweb="tab"] {
             flex: 1 !important;
             justify-content: center !important;
             border-radius: 7px !important;
             height: 34px !important;
-
             background: transparent !important;
-
-            color: #55524C !important;
-            opacity: 1 !important;
-
-            font-size: 12px !important;
-            font-weight: 600 !important;
-        }
-
-        /* The actual tab text */
-        .login-card .stTabs [data-baseweb="tab"] p {
-            color: #55524C !important;
-            opacity: 1 !important;
-            font-size: 12px !important;
-            font-weight: 600 !important;
         }
 
         /* Active tab */
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] {
-            background: #FFFFFF !important;
+        .stTabs [data-baseweb="tab"][aria-selected="true"],
+        .stTabs [data-baseweb="tab"][aria-selected="true"] p {
             color: #111110 !important;
             opacity: 1 !important;
+        }
+
+        .stTabs [data-baseweb="tab"][aria-selected="true"] {
+            background: #FFFFFF !important;
             box-shadow: 0 1px 4px rgba(17,17,16,.08) !important;
         }
 
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] p {
-            color: #111110 !important;
-            opacity: 1 !important;
-        }
-
         /* Hover */
-        .login-card .stTabs [data-baseweb="tab"]:hover {
+        .stTabs [data-baseweb="tab"]:hover,
+        .stTabs [data-baseweb="tab"]:hover p {
             color: #1B6B47 !important;
         }
 
-        .login-card .stTabs [data-baseweb="tab"]:hover p {
-            color: #1B6B47 !important;
-        }
-
-        /* Active indicator */
-        .login-card .stTabs [data-baseweb="tab-highlight"] {
+        /* Active indicator underline */
+        .stTabs [data-baseweb="tab-highlight"] {
             background: #1B6B47 !important;
         }
-
         /* File uploader dropzone */
 
         [data-testid="stFileUploaderDropzone"] {
