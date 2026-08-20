@@ -549,14 +549,13 @@ def load_css():
             transform: translateY(0);
         }
 
-        /* Auth tabs */
-        .login-card .stTabs {
-            margin-top: -3px;
-        }
+        /* ==============================
+        AUTH TABS
+        ============================== */
 
         .login-card .stTabs [data-baseweb="tab-list"] {
             width: 100%;
-            background: #F5F3EF;
+            background: #F5F3EF !important;
             border-radius: 9px;
             padding: 4px;
             gap: 3px;
@@ -567,51 +566,39 @@ def load_css():
             flex: 1;
             justify-content: center;
             border-radius: 7px;
-            color: #858078 !important;
+            height: 34px;
+
+            /* IMPORTANT */
+            color: #55524C !important;
+            opacity: 1 !important;
+
             font-size: 12px !important;
             font-weight: 600 !important;
-            height: 34px;
         }
 
-        .login-card .stTabs [aria-selected="true"] {
+        .login-card .stTabs [data-baseweb="tab"] p,
+        .login-card .stTabs [data-baseweb="tab"] span,
+        .login-card .stTabs [data-baseweb="tab"] div {
+            color: #55524C !important;
+            opacity: 1 !important;
+        }
+
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] {
             color: #111110 !important;
             background: #FFFFFF !important;
+            opacity: 1 !important;
             box-shadow: 0 1px 4px rgba(17,17,16,.08);
         }
 
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] p,
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] span,
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] div {
+            color: #111110 !important;
+            opacity: 1 !important;
+        }
+
         .login-card .stTabs [data-baseweb="tab-highlight"] {
-            display: none !important;
-        }
-
-        @media (max-width: 600px) {
-            .login-shell {
-                margin-top: 2vh;
-                width: 94vw;
-            }
-
-            .login-card {
-                padding: 24px 20px 22px 20px;
-                border-radius: 14px;
-            }
-        }
-
-        /* Tabs (Sign in / Create account) */
-
-        .stTabs [data-baseweb="tab-list"] {
-            gap: 6px;
-        }
-
-        .stTabs [data-baseweb="tab"] {
-            color: #8A8780;
-            font-size: 13px;
-        }
-
-        .stTabs [aria-selected="true"] {
-            color: #1B6B47 !important;
-        }
-
-        .stTabs [data-baseweb="tab-highlight"] {
-            background-color: #1B6B47 !important;
+            background: #1B6B47 !important;
         }
 
         /* File uploader dropzone */
