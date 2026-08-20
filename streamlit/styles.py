@@ -562,41 +562,54 @@ def load_css():
             margin-bottom: 23px;
         }
 
-        .login-card .stTabs [data-baseweb="tab"] {
+        /* Make BOTH tab labels visible */
+        .login-card .stTabs [data-baseweb="tab"],
+        .login-card .stTabs [role="tab"] {
             flex: 1;
             justify-content: center;
             border-radius: 7px;
             height: 34px;
-
-            /* IMPORTANT */
             color: #55524C !important;
             opacity: 1 !important;
-
+            -webkit-text-fill-color: #55524C !important;
             font-size: 12px !important;
             font-weight: 600 !important;
         }
 
-        .login-card .stTabs [data-baseweb="tab"] p,
-        .login-card .stTabs [data-baseweb="tab"] span,
-        .login-card .stTabs [data-baseweb="tab"] div {
+        /* Make nested text visible too */
+        .login-card .stTabs [data-baseweb="tab"] *,
+        .login-card .stTabs [role="tab"] * {
             color: #55524C !important;
             opacity: 1 !important;
+            -webkit-text-fill-color: #55524C !important;
         }
 
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] {
+        /* Active tab */
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"],
+        .login-card .stTabs [role="tab"][aria-selected="true"] {
             color: #111110 !important;
             background: #FFFFFF !important;
             opacity: 1 !important;
+            -webkit-text-fill-color: #111110 !important;
             box-shadow: 0 1px 4px rgba(17,17,16,.08);
         }
 
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] p,
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] span,
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] div {
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] *,
+        .login-card .stTabs [role="tab"][aria-selected="true"] * {
             color: #111110 !important;
             opacity: 1 !important;
+            -webkit-text-fill-color: #111110 !important;
         }
 
+        /* Hover */
+        .login-card .stTabs [data-baseweb="tab"]:hover *,
+        .login-card .stTabs [role="tab"]:hover * {
+            color: #1B6B47 !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #1B6B47 !important;
+        }
+
+        /* Active tab indicator */
         .login-card .stTabs [data-baseweb="tab-highlight"] {
             background: #1B6B47 !important;
         }
@@ -786,6 +799,37 @@ def load_css():
             padding: 10px 12px !important;
             font-size: 12px !important;
         }
+        /* ==============================
+        FIX AUTH TAB TEXT VISIBILITY
+        ============================== */
 
+        .login-card .stTabs [data-baseweb="tab"],
+        .login-card .stTabs [data-baseweb="tab"] *,
+        .login-card .stTabs [role="tab"],
+        .login-card .stTabs [role="tab"] * {
+            color: #55524C !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #55524C !important;
+        }
+
+        /* Active tab */
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"],
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] *,
+        .login-card .stTabs [role="tab"][aria-selected="true"],
+        .login-card .stTabs [role="tab"][aria-selected="true"] * {
+            color: #111110 !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #111110 !important;
+        }
+
+        /* Hover should not make the text disappear */
+        .login-card .stTabs [data-baseweb="tab"]:hover,
+        .login-card .stTabs [data-baseweb="tab"]:hover *,
+        .login-card .stTabs [role="tab"]:hover,
+        .login-card .stTabs [role="tab"]:hover * {
+            color: #1B6B47 !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #1B6B47 !important;
+        }
         </style>
         """, unsafe_allow_html=True)
