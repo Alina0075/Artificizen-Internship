@@ -549,20 +549,7 @@ def load_css():
             transform: translateY(0);
         }
 
-        /* ==============================
-        AUTH TABS — GLOBAL FIX
-        ============================== */
-
-        /* Inactive tab text — force visible, kill default opacity */
-        .stTabs [data-baseweb="tab"],
-        .stTabs [data-baseweb="tab"] p {
-            color: #55524C !important;
-            opacity: 1 !important;
-            font-size: 12px !important;
-            font-weight: 600 !important;
-        }
-
-        /* Tab list container */
+        /* AUTH TABS — hardened */
         .stTabs [data-baseweb="tab-list"] {
             background: #F5F3EF !important;
             border-radius: 9px !important;
@@ -573,31 +560,35 @@ def load_css():
         .stTabs [data-baseweb="tab"] {
             flex: 1 !important;
             justify-content: center !important;
-            border-radius: 7px !important;
             height: 34px !important;
+            border-radius: 7px !important;
             background: transparent !important;
+            opacity: 1 !important;
         }
 
-        /* Active tab */
-        .stTabs [data-baseweb="tab"][aria-selected="true"],
-        .stTabs [data-baseweb="tab"][aria-selected="true"] p {
-            color: #111110 !important;
+        /* text node — target both p and the markdown wrapper */
+        .stTabs [data-baseweb="tab"] p,
+        .stTabs [data-baseweb="tab"] [data-testid="stMarkdownContainer"] p {
+            color: #55524C !important;
             opacity: 1 !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
         }
 
         .stTabs [data-baseweb="tab"][aria-selected="true"] {
             background: #FFFFFF !important;
             box-shadow: 0 1px 4px rgba(17,17,16,.08) !important;
         }
+        .stTabs [data-baseweb="tab"][aria-selected="true"] p {
+            color: #111110 !important;
+        }
 
-        /* Hover */
-        .stTabs [data-baseweb="tab"]:hover,
         .stTabs [data-baseweb="tab"]:hover p {
             color: #1B6B47 !important;
         }
 
-        /* Active indicator underline */
-        .stTabs [data-baseweb="tab-highlight"] {
+        .stTabs [data-baseweb="tab-highlight"],
+        .stTabs [data-baseweb="tab-border"] {
             background: #1B6B47 !important;
         }
         /* File uploader dropzone */
