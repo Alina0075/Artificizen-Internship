@@ -550,66 +550,70 @@ def load_css():
         }
 
         /* ==============================
-        AUTH TABS
+        AUTH TABS — CLEAN FIX
         ============================== */
 
-        .login-card .stTabs [data-baseweb="tab-list"] {
+        .login-card .stTabs {
             width: 100%;
-            background: #F5F3EF !important;
-            border-radius: 9px;
-            padding: 4px;
-            gap: 3px;
-            margin-bottom: 23px;
         }
 
-        /* Make BOTH tab labels visible */
-        .login-card .stTabs [data-baseweb="tab"],
-        .login-card .stTabs [role="tab"] {
-            flex: 1;
-            justify-content: center;
-            border-radius: 7px;
-            height: 34px;
+        /* Tab container */
+        .login-card .stTabs [data-baseweb="tab-list"] {
+            width: 100% !important;
+            background: #F5F3EF !important;
+            border-radius: 9px !important;
+            padding: 4px !important;
+            gap: 3px !important;
+            margin-bottom: 23px !important;
+        }
+
+        /* Individual tabs */
+        .login-card .stTabs [data-baseweb="tab"] {
+            flex: 1 !important;
+            justify-content: center !important;
+            border-radius: 7px !important;
+            height: 34px !important;
+
+            background: transparent !important;
+
             color: #55524C !important;
             opacity: 1 !important;
-            -webkit-text-fill-color: #55524C !important;
+
             font-size: 12px !important;
             font-weight: 600 !important;
         }
 
-        /* Make nested text visible too */
-        .login-card .stTabs [data-baseweb="tab"] *,
-        .login-card .stTabs [role="tab"] * {
+        /* The actual tab text */
+        .login-card .stTabs [data-baseweb="tab"] p {
             color: #55524C !important;
             opacity: 1 !important;
-            -webkit-text-fill-color: #55524C !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
         }
 
         /* Active tab */
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"],
-        .login-card .stTabs [role="tab"][aria-selected="true"] {
-            color: #111110 !important;
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] {
             background: #FFFFFF !important;
+            color: #111110 !important;
             opacity: 1 !important;
-            -webkit-text-fill-color: #111110 !important;
-            box-shadow: 0 1px 4px rgba(17,17,16,.08);
+            box-shadow: 0 1px 4px rgba(17,17,16,.08) !important;
         }
 
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] *,
-        .login-card .stTabs [role="tab"][aria-selected="true"] * {
+        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] p {
             color: #111110 !important;
             opacity: 1 !important;
-            -webkit-text-fill-color: #111110 !important;
         }
 
         /* Hover */
-        .login-card .stTabs [data-baseweb="tab"]:hover *,
-        .login-card .stTabs [role="tab"]:hover * {
+        .login-card .stTabs [data-baseweb="tab"]:hover {
             color: #1B6B47 !important;
-            opacity: 1 !important;
-            -webkit-text-fill-color: #1B6B47 !important;
         }
 
-        /* Active tab indicator */
+        .login-card .stTabs [data-baseweb="tab"]:hover p {
+            color: #1B6B47 !important;
+        }
+
+        /* Active indicator */
         .login-card .stTabs [data-baseweb="tab-highlight"] {
             background: #1B6B47 !important;
         }
@@ -799,37 +803,6 @@ def load_css():
             padding: 10px 12px !important;
             font-size: 12px !important;
         }
-        /* ==============================
-        FIX AUTH TAB TEXT VISIBILITY
-        ============================== */
-
-        .login-card .stTabs [data-baseweb="tab"],
-        .login-card .stTabs [data-baseweb="tab"] *,
-        .login-card .stTabs [role="tab"],
-        .login-card .stTabs [role="tab"] * {
-            color: #55524C !important;
-            opacity: 1 !important;
-            -webkit-text-fill-color: #55524C !important;
-        }
-
-        /* Active tab */
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"],
-        .login-card .stTabs [data-baseweb="tab"][aria-selected="true"] *,
-        .login-card .stTabs [role="tab"][aria-selected="true"],
-        .login-card .stTabs [role="tab"][aria-selected="true"] * {
-            color: #111110 !important;
-            opacity: 1 !important;
-            -webkit-text-fill-color: #111110 !important;
-        }
-
-        /* Hover should not make the text disappear */
-        .login-card .stTabs [data-baseweb="tab"]:hover,
-        .login-card .stTabs [data-baseweb="tab"]:hover *,
-        .login-card .stTabs [role="tab"]:hover,
-        .login-card .stTabs [role="tab"]:hover * {
-            color: #1B6B47 !important;
-            opacity: 1 !important;
-            -webkit-text-fill-color: #1B6B47 !important;
-        }
+        
         </style>
         """, unsafe_allow_html=True)
